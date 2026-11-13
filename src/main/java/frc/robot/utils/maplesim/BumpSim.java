@@ -115,13 +115,13 @@ public class BumpSim {
     public static Translation3d updateFuel(ImprovedRebuiltFuelOnField fuel) {
         Translation2d fuelPose = fuel.getPoseOnField().getTranslation();
 
-        DoublePair fuelHeightAndSlope = getSphereHeightAndEffectiveSlope(fuelPose, Constants.Game.FUEL_RADIUS_METERS);
+        DoublePair fuelHeightAndSlope = getSphereHeightAndEffectiveSlope(fuelPose, 0.1);
         double fuelEffectiveSlope = fuelHeightAndSlope.second();
 
         double horizontalAcceleration = -9.81 * fuelEffectiveSlope / (1 + fuelEffectiveSlope * fuelEffectiveSlope);
 
         // F = ma
-        fuel.applyForce(new Force(horizontalAcceleration * Constants.Game.FUEL_MASS_KG, 0.0));
+        fuel.applyForce(new Force(horizontalAcceleration * 0.1 /* idk bruh */, 0.0));
 
         return new Translation3d(fuelPose.getX(), fuelPose.getY(), fuelHeightAndSlope.first());
     }

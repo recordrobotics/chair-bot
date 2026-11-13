@@ -1,51 +1,18 @@
 package frc.robot.control;
 
 import edu.wpi.first.math.Pair;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.utils.ContainerUtils;
 import frc.robot.utils.DriverStationUtils;
-import frc.robot.utils.modifiers.DrivetrainControl;
 
 public interface AbstractControl {
 
     void update();
 
-    boolean isIntakeUpPressed();
+    double getForward();
 
-    boolean isIntakePressed();
-
-    boolean isIntakeInvertPressed();
-
-    boolean isReverseIntakePressed();
-
-    boolean isDefenseModePressed();
-
-    boolean isClimbPressed();
-
-    boolean isShooterPassPressed();
-
-    boolean isShooterDisableShootPressed();
-
-    boolean isUnstuckSpindexerPressed();
-
-    boolean isIntakeRelativePressed();
-
-    // Movement
-    DrivetrainControl getDrivetrainControl();
-
-    Transform2d getRawDriverInput();
-
-    // Misc
-    boolean isPoseResetTriggered();
-
-    boolean isKillTriggered();
-
-    boolean isSlowSpeedPressed();
-
-    void vibrate(RumbleType type, double value);
+    double getTurn();
 
     String toDisplayName();
 

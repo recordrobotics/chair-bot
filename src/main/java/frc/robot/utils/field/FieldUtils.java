@@ -4,7 +4,6 @@ import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.RobotContainer;
 import frc.robot.utils.DriverStationUtils;
 
 public final class FieldUtils {
@@ -123,7 +122,6 @@ public final class FieldUtils {
     }
 
     public static boolean isInAllianceZone() {
-        return isInAllianceZone(
-                RobotContainer.poseSensorFusion.getEstimatedPosition().getTranslation());
+        return true; // whatever
     }
 }

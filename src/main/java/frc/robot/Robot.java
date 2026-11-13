@@ -14,8 +14,6 @@ import edu.wpi.first.wpilibj.RobotController.RadioLEDState;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.PowerDistributionPanel;
-import frc.robot.subsystems.RobotModel;
 import frc.robot.utils.AutoLogLevelManager;
 import frc.robot.utils.ConsoleLogger;
 import frc.robot.utils.LocalADStarAK;
@@ -23,7 +21,6 @@ import frc.robot.utils.SysIdManager;
 import frc.robot.utils.libraries.Elastic;
 import frc.robot.utils.maplesim.ImprovedArena2026Rebuilt;
 import frc.robot.utils.maplesim.ImprovedMapleMatch;
-import frc.robot.utils.maplesim.OpponentRobot;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import org.ironmaple.simulation.SimulatedArena;
@@ -79,7 +76,6 @@ public final class Robot extends LoggedRobot {
     }
 
     private void configureLogging() {
-        PowerDistributionPanel.setupLogging();
         if (Constants.RobotState.getMode().isRealtime()) {
             configureRealtimeLogging();
         } else {
@@ -182,10 +178,6 @@ public final class Robot extends LoggedRobot {
         if (Constants.RobotState.getMode() == Constants.RobotState.Mode.SIM) {
             // Reset simulation field
             SimulatedArena.getInstance().resetFieldForAuto();
-
-            // Create opponent robots
-            OpponentRobot.createDefaultOpponents();
-            OpponentRobot.resetAndEnableAllOthers();
         }
 
         // MAKE SURE FIRST CALL TO ELASTIC IS NOT IN TELEOP OR AUTO INIT!!
@@ -229,17 +221,10 @@ public final class Robot extends LoggedRobot {
 
         RobotContainer.getControl().update();
 
-        // End and start reversed to make sure we get latest data before command scheduler
-        RobotContainer.poseSensorFusion.endCalculation();
-        RobotContainer.fieldStateTracker.endCalculation();
-        RobotContainer.poseSensorFusion.startCalculation();
-        RobotContainer.fieldStateTracker.startCalculation();
-
         RobotContainer.robotPeriodic();
 
         if (Constants.RobotState.getMode() == Constants.RobotState.Mode.SIM) {
             ImprovedMapleMatch.getInstance().periodic();
-            OpponentRobot.logPoses();
         }
 
         try {
@@ -291,13 +276,8 @@ public final class Robot extends LoggedRobot {
         if (Constants.RobotState.getMode() == Constants.RobotState.Mode.SIM) {
             // Reset simulation field
             SimulatedArena.getInstance().resetFieldForAuto();
-            RobotModel.getFuelManager().preloadFuel();
             ImprovedMapleMatch.getInstance().autonomousInit();
-
-            OpponentRobot.resetAndEnableAllOthers();
         }
-
-        RobotContainer.model.intakeModel.resetHopperExtension();
 
         // schedule the autonomous command
         if (autonomousCommand != null) {
